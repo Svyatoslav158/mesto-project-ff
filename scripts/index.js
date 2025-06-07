@@ -42,29 +42,50 @@ initialCards.forEach((cardData) => {
 
 
 // POP
+// ---------- Открытие попапов ----------
 
+// Кнопки
+const editButton = document.querySelector('.profile__edit-button');
+const addButton = document.querySelector('.profile__add-button');
 
-const popupEditProfile = document.querySelector(".popup_type_edit");
+// Попапы
+const popupEdit = document.querySelector('.popup_type_edit');
+const popupAdd = document.querySelector('.popup_type_new-card');
+const popupImage = document.querySelector('.popup_type_image');
 
-const popupAddCard = document.querySelector(".popup_type_new-card");
-const popupImage = document.querySelector(".popup_type_image");
+// Все кнопки закрытия
+const closeButtons = document.querySelectorAll('.popup__close');
 
-const btnEditProfile = document.querySelector(".profile__edit-button");
-const btnAddCard = document.querySelector(".profile__add-button");
-
-
-
-// функция открытия поп
-function showModal(popupElement) {
-  popupElement.classList.add("popup_opened");
-  document.addEventListener("keydown", handleEscClose);
+// Функции
+function openPopup(popup) {
+  popup.classList.add('popup_opened');
 }
 
+function closePopup(popup) {
+  popup.classList.remove('popup_opened');
+}
 
+// События на открытие
+editButton.addEventListener('click', () => openPopup(popupEdit));
+addButton.addEventListener('click', () => openPopup(popupAdd));
 
-// кнопка открытия
-btnEditProfile.addEventListener("click", () => {
-  inputName.value = profileTitle.textContent;
-  inputJob.value = profileSubtitle.textContent;
-  showModal(popupEditProfile);
+//  открытие попапа по клику на картинку
+
+document.addEventListener('click', function (e) {
+  if (e.target.classList.contains('card__image')) {
+    const img = popupImage.querySelector('.popup__image');
+    const caption = popupImage.querySelector('.popup__caption');
+    img.src = e.target.src;
+    img.alt = e.target.alt;
+    caption.textContent = e.target.alt;
+    openPopup(popupImage);
+  }
+});
+
+// События на закрытие
+closeButtons.forEach((btn) => {
+  btn.addEventListener('click', (e) => {
+    const popup = e.target.closest('.popup');
+    closePopup(popup);
+  });
 });
